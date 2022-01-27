@@ -1,16 +1,15 @@
 # import the opencv library
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
 
 # define a video capture object
 vid = cv2.VideoCapture(0)
 
-low_blue = np.array([94, 80, 2])
-high_blue = np.array([126, 255, 255])
+#low_blue = np.array([94, 80, 2])
+#high_blue = np.array([126, 255, 255])
 
-hsv_low = np.array([103,198,28], np.uint8)
-hsv_high = np.array([118, 255, 130], np.uint8)
+hsv_low = np.array([91,204,45], np.uint8)
+hsv_high = np.array([121, 255, 134], np.uint8)
 
 while(True):
     ret, frame = vid.read()
@@ -24,15 +23,20 @@ while(True):
     contours, hierachy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     for contour in contours:
         area = cv2.contourArea(contour)
-        #print(area)
+        print(area)
         if area > 400:
-            #cv2.drawContours(frame, contour, -1, (0,255,0), 3)
+            cv2.drawContours(frame, contour, -1, (0,255,0), 3)
             M = cv2.moments(contour)
             if M['m00'] != 0:
                 cx = int(M['m10']/M['m00'])
                 cy = int(M['m01']/M['m00'])
                 cv2.circle(frame, (cx, cy), 3, (0, 255, 0), -1)
-                print(cx, cy)  
+                cv2.putText(frame, str(cx) + " " + str(cy), (50,50), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0), 2)
+
+                direccion = "izquierda" if cx < int(frame.shape[1]/2) else "derecha"
+                cv2.putText(frame, direccion, (250,50), cv2.FONT_HERSHEY_PLAIN, 1, (255,0,0), 2)
+                
+                print(frame.shape)
 
     cv2.imshow('frame', frame)
     cv2.imshow('blue', blue)
