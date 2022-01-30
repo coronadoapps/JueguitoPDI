@@ -24,7 +24,7 @@ H_low = 0
 H_high = 179
 S_low= 0
 S_high = 255
-V_low= 0
+V_low= 0	
 V_high = 255
 
 #create trackbars for high,low H,S,V 
